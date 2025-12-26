@@ -2,6 +2,27 @@
 
 ## 📅 Sessions
 
+### 2025-12-26 - Documentation et configuration d'environnement
+
+**Contexte:**
+Amélioration de la documentation et ajout du support des variables d'environnement pour faciliter le déploiement dev/prod.
+
+**Réalisations:**
+- Création de `.env.example` avec `API_URL` configurable
+- Création de `build.sh` : script bash qui charge `.env` et met à jour `src/config.ts`
+- Mise à jour du README avec :
+  - Instructions détaillées de build avec `./build.sh`
+  - Section Publication sur les stores (Chrome, Edge, Firefox)
+  - Checklist pré-publication
+  - Instructions de mise à jour en dev et prod
+- Ajout de `.claude/` au `.gitignore`
+
+**Décisions techniques:**
+- **build.sh plutôt que dotenv** : Pas de dépendance npm supplémentaire, le script bash génère directement `src/config.ts`
+- **Variables d'environnement au build** : L'URL API est "baked" dans le bundle, pas de runtime config nécessaire
+
+---
+
 ### 2025-12-25 - Build system et conversion Markdown
 
 **Contexte:**
@@ -84,6 +105,7 @@ Création d'une extension navigateur (Chrome, Firefox, Edge) pour capturer des o
 - Message passing typé entre background/content/popup
 - **Script de build custom esbuild** : plus de contrôle, moins de magie
 - **HTML→Markdown conversion** : préserve la structure sans les balises HTML
+- **build.sh + .env** : configuration d'environnement sans dépendances npm
 
 ## 📋 TODO / Dette technique
 - [ ] **Ajouter les endpoints API côté Django (JobMatch)** - PRIORITÉ HAUTE
@@ -101,15 +123,20 @@ Création d'une extension navigateur (Chrome, Firefox, Edge) pour capturer des o
 
 ## 🔧 Commandes utiles
 ```bash
-# Build Firefox
-npm run build:firefox
+# Build avec variables d'environnement (recommandé)
+./build.sh              # Build tous (Chrome + Firefox)
+./build.sh chrome       # Chrome/Edge uniquement
+./build.sh firefox      # Firefox uniquement
 
-# Build Chrome/Edge
-npm run build
+# Build production
+API_URL=https://api.jobmatch.com ./build.sh
 
-# Watch mode
-npm run watch
+# Build avec npm (valeurs par défaut)
+npm run build           # Chrome/Edge
+npm run build:firefox   # Firefox
+npm run watch           # Watch mode
 
-# Recharger extension Firefox
-# about:debugging#/runtime/this-firefox → Recharger
+# Recharger extension
+# Firefox: about:debugging#/runtime/this-firefox → Recharger
+# Chrome/Edge: chrome://extensions → 🔄
 ```

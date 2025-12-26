@@ -26,16 +26,43 @@ cd jobmatchwebbrowerplugin
 npm install
 ```
 
-### 2. Configurer l'API (optionnel)
+### 2. Configurer l'API
 
-Par défaut, l'extension pointe vers `http://localhost:8085`. Pour modifier :
+Copier le fichier d'environnement et configurer l'URL de l'API :
 
-```typescript
-// src/config.ts
-export const DEFAULT_API_URL = 'http://localhost:8085';
+```bash
+cp .env.example .env
+```
+
+Modifier `.env` selon votre environnement :
+
+```bash
+# Développement
+API_URL=http://localhost:8085
+
+# Production
+API_URL=https://api.jobmatch.com
 ```
 
 ### 3. Build
+
+#### Avec le script build.sh (recommandé)
+
+```bash
+# Build tous les navigateurs (Chrome + Firefox)
+./build.sh
+
+# Build Chrome/Edge uniquement
+./build.sh chrome
+
+# Build Firefox uniquement
+./build.sh firefox
+
+# Override de l'API URL à la volée
+API_URL=https://api.jobmatch.com ./build.sh
+```
+
+#### Avec npm
 
 ```bash
 # Build pour Chrome/Edge (sortie dans dist/)
@@ -50,6 +77,8 @@ npm run build:all
 # Mode watch (rebuild automatique à chaque modification)
 npm run watch
 ```
+
+> **Note :** Les commandes npm utilisent la valeur par défaut de `src/config.ts`. Utilisez `./build.sh` pour appliquer les variables d'environnement.
 
 ### 4. Charger l'extension en mode développeur
 
@@ -133,14 +162,22 @@ GET  /api/health/              # Health check
 ## Scripts disponibles
 
 ```bash
-npm run build       # Build Chrome/Edge
-npm run build:firefox  # Build Firefox
-npm run build:all   # Build tous
-npm run watch       # Build avec watch
-npm run type-check  # Vérification TypeScript
-npm run lint        # Linter
-npm run format      # Formatter (Prettier)
-npm run clean       # Nettoyer dist/
+# Build avec variables d'environnement (recommandé)
+./build.sh              # Build tous (Chrome + Firefox)
+./build.sh chrome       # Build Chrome/Edge
+./build.sh firefox      # Build Firefox
+
+# Build avec npm (valeurs par défaut)
+npm run build           # Build Chrome/Edge
+npm run build:firefox   # Build Firefox
+npm run build:all       # Build tous
+npm run watch           # Build avec watch
+
+# Outils
+npm run type-check      # Vérification TypeScript
+npm run lint            # Linter
+npm run format          # Formatter (Prettier)
+npm run clean           # Nettoyer dist/
 ```
 
 ## Publication sur les Stores
@@ -214,7 +251,7 @@ Avant de soumettre, vérifiez :
 ### Checklist pré-publication
 
 - [ ] Tester sur Chrome, Edge et Firefox
-- [ ] Vérifier que l'API de production est configurée
+- [ ] Configurer l'API de production : `API_URL=https://api.jobmatch.com ./build.sh`
 - [ ] Supprimer les logs de debug (`CONFIG.DEBUG = false`)
 - [ ] Vérifier les permissions (ne demander que le minimum)
 - [ ] Tester l'extraction sur les principaux sites d'emploi
