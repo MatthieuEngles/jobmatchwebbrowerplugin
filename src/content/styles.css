@@ -1,0 +1,292 @@
+/**
+ * Content Script Styles
+ * Isolated from page styles using unique prefixes
+ */
+
+/* ============================================================================
+   Floating Action Button
+   ============================================================================ */
+
+#jobmatch-floating-button {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2147483647; /* Maximum z-index */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 20px;
+
+  background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+  color: white;
+
+  border: none;
+  border-radius: 50px;
+  box-shadow:
+    0 4px 14px rgba(99, 102, 241, 0.4),
+    0 2px 6px rgba(0, 0, 0, 0.1);
+
+  cursor: pointer;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+
+  /* Reset any inherited styles */
+  box-sizing: border-box;
+  line-height: 1.5;
+  text-decoration: none;
+  margin: 0;
+}
+
+#jobmatch-floating-button.jobmatch-fab-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+#jobmatch-floating-button:hover {
+  background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
+  box-shadow:
+    0 6px 20px rgba(99, 102, 241, 0.5),
+    0 3px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px) scale(1.02);
+}
+
+#jobmatch-floating-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+#jobmatch-floating-button.jobmatch-fab-error {
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  box-shadow:
+    0 4px 14px rgba(239, 68, 68, 0.4),
+    0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Button content states */
+.jobmatch-fab-content,
+.jobmatch-fab-loading,
+.jobmatch-fab-success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.jobmatch-fab-content svg,
+.jobmatch-fab-loading svg,
+.jobmatch-fab-success svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.jobmatch-fab-text {
+  white-space: nowrap;
+}
+
+/* Loading spinner animation */
+.jobmatch-spinner {
+  animation: jobmatch-spin 1s linear infinite;
+}
+
+@keyframes jobmatch-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Success state */
+.jobmatch-fab-success {
+  color: white;
+}
+
+.jobmatch-fab-success svg {
+  stroke: white;
+}
+
+/* ============================================================================
+   Notification Toast
+   ============================================================================ */
+
+#jobmatch-notification {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  z-index: 2147483647;
+
+  display: flex;
+  align-items: center;
+
+  padding: 14px 20px;
+
+  background: #1F2937;
+  color: white;
+
+  border-radius: 12px;
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.1);
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+
+  opacity: 0;
+  transform: translateX(20px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+
+  /* Reset */
+  box-sizing: border-box;
+  line-height: 1.5;
+  margin: 0;
+}
+
+#jobmatch-notification.jobmatch-notification-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Notification types */
+.jobmatch-notification-success {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+}
+
+.jobmatch-notification-error {
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+}
+
+.jobmatch-notification-info {
+  background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+}
+
+/* ============================================================================
+   Modal Overlay (for future use)
+   ============================================================================ */
+
+#jobmatch-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2147483646;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
+#jobmatch-modal-overlay.jobmatch-modal-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.jobmatch-modal {
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+
+  padding: 24px;
+
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+
+  overflow-y: auto;
+
+  transform: scale(0.9) translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+#jobmatch-modal-overlay.jobmatch-modal-visible .jobmatch-modal {
+  transform: scale(1) translateY(0);
+}
+
+/* ============================================================================
+   Dark mode support
+   ============================================================================ */
+
+@media (prefers-color-scheme: dark) {
+  #jobmatch-notification {
+    background: #374151;
+  }
+
+  .jobmatch-modal {
+    background: #1F2937;
+    color: #F9FAFB;
+  }
+}
+
+/* ============================================================================
+   Responsive adjustments
+   ============================================================================ */
+
+@media (max-width: 640px) {
+  #jobmatch-floating-button {
+    bottom: 16px;
+    right: 16px;
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .jobmatch-fab-text {
+    display: none;
+  }
+
+  #jobmatch-floating-button {
+    padding: 14px;
+    border-radius: 50%;
+  }
+
+  #jobmatch-notification {
+    left: 16px;
+    right: 16px;
+    bottom: 80px;
+  }
+}
+
+/* ============================================================================
+   Accessibility
+   ============================================================================ */
+
+#jobmatch-floating-button:focus {
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #jobmatch-floating-button,
+  #jobmatch-notification,
+  .jobmatch-modal,
+  #jobmatch-modal-overlay {
+    transition: none;
+  }
+
+  .jobmatch-spinner {
+    animation: none;
+  }
+}

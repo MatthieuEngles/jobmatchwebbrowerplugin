@@ -1,0 +1,41 @@
+{
+  "name": "jobmatch-browser-extension",
+  "version": "1.0.0",
+  "description": "Extension navigateur pour capturer des offres d'emploi et les envoyer à JobMatch",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "build:firefox": "node scripts/build.js --firefox",
+    "build:all": "npm run build && npm run build:firefox",
+    "watch": "node scripts/build.js --watch",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,html}\"",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist dist-firefox"
+  },
+  "keywords": [
+    "browser-extension",
+    "chrome-extension",
+    "firefox-addon",
+    "job-matching",
+    "cv"
+  ],
+  "author": "JobMatch Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chrome": "^0.0.287",
+    "@types/webextension-polyfill": "^0.12.1",
+    "@typescript-eslint/eslint-plugin": "^8.18.1",
+    "@typescript-eslint/parser": "^8.18.1",
+    "esbuild": "^0.24.2",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "webextension-polyfill": "^0.12.0"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  }
+}
