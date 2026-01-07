@@ -136,11 +136,14 @@ async function handleImportOffer(payload: {
   }
 
   // Save locally first
+  // Truncate sourceUrl to 500 chars max (API limit)
+  const truncatedUrl = (offer.sourceUrl ?? '').substring(0, 500);
+
   const fullOffer: JobOffer = {
     ...offer,
     title: offer.title ?? 'Sans titre',
     description: offer.description ?? '',
-    sourceUrl: offer.sourceUrl ?? '',
+    sourceUrl: truncatedUrl,
     sourceDomain: offer.sourceDomain ?? '',
     capturedAt: offer.capturedAt ?? new Date().toISOString(),
   } as JobOffer;
@@ -150,7 +153,7 @@ async function handleImportOffer(payload: {
   // Send to API
   const settings = await getSettings();
   const request: ImportOfferRequest = {
-    offer,
+    offer: fullOffer,
     profileId: settings.defaultProfileId,
   };
 
@@ -241,23 +244,26 @@ chrome.runtime.onStartup.addListener(async () => {
 // Context Menu (Right-click)
 // ============================================================================
 
-chrome.runtime.onInstalled.addListener(() => {
-  // Create context menu for importing jobs from right-click
-  chrome.contextMenus.create({
-    id: 'jobmatch-import',
-    title: 'Ajouter à JobMatch',
-    contexts: ['page', 'selection'],
-  });
-});
-
-chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  if (info.menuItemId === 'jobmatch-import' && tab?.id) {
-    // Send message to content script to extract and import
-    chrome.tabs.sendMessage(tab.id, {
-      type: 'EXTRACT_AND_IMPORT',
-      timestamp: Date.now(),
+// Only create context menu if the API is available (requires contextMenus permission)
+if (typeof chrome.contextMenus !== 'undefined') {
+  chrome.runtime.onInstalled.addListener(() => {
+    // Create context menu for importing jobs from right-click
+    chrome.contextMenus.create({
+      id: 'jobmatch-import',
+      title: 'Ajouter à JobMatch',
+      contexts: ['page', 'selection'],
     });
-  }
-});
+  });
+
+  chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+    if (info.menuItemId === 'jobmatch-import' && tab?.id) {
+      // Send message to content script to extract and import
+      chrome.tabs.sendMessage(tab.id, {
+        type: 'EXTRACT_AND_IMPORT',
+        timestamp: Date.now(),
+      });
+    }
+  });
+}
 
 console.log('[Background] Service worker initialized');

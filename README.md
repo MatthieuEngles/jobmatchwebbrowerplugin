@@ -41,7 +41,7 @@ Modifier `.env` selon votre environnement :
 API_URL=http://localhost:8085
 
 # Production
-API_URL=https://api.jobmatch.com
+API_URL=http://jobmatch.molp.fr
 ```
 
 ### 3. Build
@@ -59,7 +59,7 @@ API_URL=https://api.jobmatch.com
 ./build.sh firefox
 
 # Override de l'API URL à la volée
-API_URL=https://api.jobmatch.com ./build.sh
+API_URL=http://jobmatch.molp.fr ./build.sh
 ```
 
 #### Avec npm
@@ -251,7 +251,7 @@ Avant de soumettre, vérifiez :
 ### Checklist pré-publication
 
 - [ ] Tester sur Chrome, Edge et Firefox
-- [ ] Configurer l'API de production : `API_URL=https://api.jobmatch.com ./build.sh`
+- [ ] Configurer l'API de production : `API_URL=http://jobmatch.molp.fr ./build.sh`
 - [ ] Supprimer les logs de debug (`CONFIG.DEBUG = false`)
 - [ ] Vérifier les permissions (ne demander que le minimum)
 - [ ] Tester l'extraction sur les principaux sites d'emploi

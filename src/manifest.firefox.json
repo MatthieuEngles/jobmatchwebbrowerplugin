@@ -43,7 +43,9 @@
     "tabs"
   ],
   "host_permissions": [
-    "http://localhost:*/*",
+    "*://localhost/*",
+    "http://jobmatch.molp.fr/*",
+    "https://jobmatch.molp.fr/*",
     "https://*.jobmatch.fr/*"
   ],
   "options_ui": {

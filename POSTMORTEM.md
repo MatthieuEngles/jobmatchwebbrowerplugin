@@ -129,7 +129,7 @@ Création d'une extension navigateur (Chrome, Firefox, Edge) pour capturer des o
 ./build.sh firefox      # Firefox uniquement
 
 # Build production
-API_URL=https://api.jobmatch.com ./build.sh
+API_URL=http://jobmatch.molp.fr ./build.sh
 
 # Build avec npm (valeurs par défaut)
 npm run build           # Chrome/Edge
